@@ -77,15 +77,17 @@ class bilibiliClient():
     def ReceiveMessageLoop(self):
         while self.connected == True:
             tmp = self._socket.recv(4)
-            expr, = unpack('!I', tmp)
+            if(len(tmp) < 4):
+                continue
+            expr, = unpack('!i', tmp)
             tmp = self._socket.recv(2)
             tmp = self._socket.recv(2)
             tmp = self._socket.recv(4)
-            num, = unpack('!I', tmp)
+            num, = unpack('!i', tmp)
             tmp = self._socket.recv(4)
             num2 = expr - 16
 
-            if num2 != 0:
+            if num2 > 0:
                 num -= 1
                 if num==0 or num==1 or num==2:
                     tmp = self._socket.recv(4)
